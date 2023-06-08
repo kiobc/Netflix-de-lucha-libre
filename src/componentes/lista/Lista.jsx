@@ -33,13 +33,13 @@ export default function Lista() {
         />
 
         <div className="contenedor" ref={listaRef}>
-          <ListaItem />
-          <ListaItem />
-          <ListaItem />
-          <ListaItem />
-          <ListaItem />
-          <ListaItem />
-          <ListaItem />
+          <ListaItem index={0}/>
+          <ListaItem index={1}/>
+          <ListaItem index={2}/>
+          <ListaItem index={3}/>
+          <ListaItem index={4}/>
+          <ListaItem index={5}/>
+          <ListaItem index={6}/>
         </div>
         <ArrowForwardIosOutlined className="sliderFlecha derecha" onClick={() => handleClick('derecha')} />
       </div>
