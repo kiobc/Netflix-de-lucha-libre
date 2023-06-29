@@ -11,7 +11,7 @@ function verify(req, res, next) {
       next();
     });
   } else {
-    return res.status(401).json("Estas autenticado!");
+    return res.status(401).json("No estas autenticado!");
   }
 }
 
