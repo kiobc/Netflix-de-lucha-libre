@@ -69,7 +69,7 @@ router.get("/stats",async (req,res)=>{
 
     const mesesArray=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto",
     "Septiembre","Octubre","Noviembre","Diciembre"];
-
+cd
     try{
         const data=await Usuario.aggregate([
             {$project:{month:{$month:"$createdAt"}}},
