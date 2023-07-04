@@ -47,6 +47,30 @@ router.delete("/:id",verify,async (req,res)=>{
     }
 });
 
+// Obtener random
+router.get("/aleatorio", verify, async (req, res) => {
+    const type = req.query.type;
+    let pelicula;
+    try {
+      if (type === "series") {
+        pelicula = await Pelicula.aggregate([
+          { $match: { isSeries: true } },
+          { $sample: { size: 1 } },
+        ]);
+      } else {
+        pelicula = await Pelicula.aggregate([
+          { $match: { isSeries: false } },
+          { $sample: { size: 1 } },
+        ]);
+      }
+      res.status(200).json(pelicula);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+  
+  
+
 //Obtener
 router.get("/:id",verify,async (req,res)=>{
     try{
@@ -57,25 +81,22 @@ router.get("/:id",verify,async (req,res)=>{
     }
 });
 
-//Obtener random
-router.get("/random",verify,async (req,res)=>{
-    const tipo=req.query.tipo;
-    let pelicula;
-    try{
-        if(tipo==="serie"){
-            pelicula=await Pelicula.aggregate([
-                {$match:{esSerie:true}},
-                {$sample:{size:1}},
-            ]);
-        }else{
-            pelicula=await Pelicula.aggregate([
-                {$match:{esSerie:false}},
-                {$sample:{size:1}},
-            ]);
+//Obtener todas
+router.get("/",verify,async (req,res)=>{
+    if(req.usuario.isAdmin){
+        try{
+            const peliculas=await Pelicula.find();
+            res.status(200).json(peliculas.reverse());
+        }catch(err){
+            res.status(500).json(err);
         }
-        res.status(200).json(pelicula);
-    }catch(err){
-        res.status(500).json(err);
+    }else{
+        res.status(403).json("No puedes ver todas las peliculas");
     }
 });
+
+
+  
+  
+  
 module.exports=router;
