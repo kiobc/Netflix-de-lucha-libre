@@ -3,6 +3,7 @@ import axios from "axios";
 import Destacado from "../componentes/destacado/Destacado";
 import Lista from "../componentes/lista/Lista";
 import Navbar from "../componentes/navbar/Navbar";
+import "./home.scss";
 
 const apiURL = "http://localhost:8800/api";
 
@@ -42,9 +43,10 @@ const Home = ({ tipo }) => {
     <div className="home">
       <Navbar />
       <Destacado tipo={tipo} setGenero={setGenero} />
-      {lista.map((item) => (
-        <Lista key={item.id} item={item} />
-      ))}
+      {lista.map((item, index) => {
+        const key = item.nombre ? item.nombre + index : index;
+        return <Lista key={key} item={item} />;
+      })}
     </div>
   );
 };
