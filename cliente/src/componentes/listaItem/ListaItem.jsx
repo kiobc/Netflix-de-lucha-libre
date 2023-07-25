@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player';
 import './listaItem.scss';
 import { Add, PlayArrow, ThumbDownOutlined, ThumbUpAltOutlined } from '@material-ui/icons';
 
+
 export default function ListaItem({ index }) {
   const [isHovered, setIsHovered] = useState(false);
   const trailerId = 'Tlehw0A7wuI';

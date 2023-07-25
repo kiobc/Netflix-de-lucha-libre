@@ -45,10 +45,12 @@ const Home = ({ tipo }) => {
       <Destacado tipo={tipo} setGenero={setGenero} />
       {lista.map((item, index) => {
         const key = item.nombre ? item.nombre + index : index;
-        return <Lista key={key} item={item} />;
+        return <Lista key={key} titulo={item.titulo} item={item} />;
       })}
     </div>
   );
+  
+  
 };
 
 export default Home;
