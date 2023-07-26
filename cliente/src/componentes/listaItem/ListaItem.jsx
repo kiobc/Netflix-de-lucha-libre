@@ -1,24 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import './listaItem.scss';
 import { Add, PlayArrow, ThumbDownOutlined, ThumbUpAltOutlined } from '@material-ui/icons';
-
-
-export default function ListaItem({ index }) {
+import axios from 'axios';
+const apiURL = "http://localhost:8800/api";
+export default function ListaItem({ index, item }) {
   const [isHovered, setIsHovered] = useState(false);
-  const trailerId = 'Tlehw0A7wuI';
+  const [pelicula, setPelicula] = useState({});
+
+  useEffect(() => {
+    const getPelicula = async () => {
+      try {
+       
+        const res = await axios.get(`${apiURL}/pelicula/${item}`, {
+          headers: {
+            token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0OWNmYjU0NDdmODU1MTVlMzcyMThhZiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY5MDM4NjUzNSwiZXhwIjoxNjkwODE4NTM1fQ.uDOHbODpl72TzOQ2kFN0MOjgglxPPixB0PJRPcGVwO0",
+          },
+        });
+        setPelicula(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPelicula();
+  }, [item]);
+  
 
   return (
     <div
       className='listaItem'
-      style={{ left: isHovered && index * 225 - 50 + index * 2.5 }}
+      style={{ left: isHovered ? index * 225 - 50 + index * 2.5 : 0 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {isHovered ? (
         <div className="videoWrapper">
           <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${trailerId}`}
+            url={pelicula.trailer}
             className="react-player"
             width="100%"
             height="100%"
@@ -27,7 +45,7 @@ export default function ListaItem({ index }) {
           />
         </div>
       ) : (
-        <img src="https://th.bing.com/th/id/R.af90d224c738702c6c9e18d7fd144bcf?rik=q%2bTASMIRzHw4ZA&riu=http%3a%2f%2fimages2.fanpop.com%2fimages%2fphotos%2f4600000%2fWrestleMania-XXV-professional-wrestling-4696205-1280-1024.jpg&ehk=WDX0EaqnR2%2fNnr6e%2bh00eixi%2boAmtU185pvKTnTNcfI%3d&risl=&pid=ImgRaw&r=0" alt="" />
+        <img src={pelicula.img} alt="" />
       )}
 
       <div className="itemInfo">
@@ -38,16 +56,12 @@ export default function ListaItem({ index }) {
           <ThumbDownOutlined className='icono'/>
         </div>
         <div className="itemInfoTop">
-          <span>1 hora 14 min</span>
-          <span className="limite">+16</span>
-          <span>1999</span>
+          <span>{pelicula.duracion}</span>
+          <span className="limite">{pelicula.limite}</span>
+          <span>{pelicula.anio}</span>
         </div>
-        <div className="descripcion">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. At reiciendis necessitatibus explicabo maiores dicta iusto iure quasi aliquam quis tempore sed odit .
-        </div>
-        <div className="genero">
-          Acción
-        </div>
+        <div className="descripcion">{pelicula.desc}</div>
+        <div className="genero">{pelicula.genero}</div>
       </div>
     </div>
   );
